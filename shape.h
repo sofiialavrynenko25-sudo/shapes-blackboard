@@ -18,7 +18,7 @@ class Shape
 
         virtual bool CheckCoordinates(int x, int y) const = 0;
 
-        virtual void DrawOnBoard(std::vector<std::vector<char>>& grid) const = 0;
+        virtual void DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int height) const = 0;
 
         virtual bool EditParameters() = 0;
 

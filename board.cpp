@@ -10,7 +10,7 @@ void Board::Draw() const
     {
         if (shape != nullptr)
         {
-            shape -> DrawOnBoard(grid);
+            shape -> DrawOnBoard(grid, _width, _height);
         }
     }
 
