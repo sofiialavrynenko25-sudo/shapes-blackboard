@@ -47,13 +47,13 @@ void Rectangle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int
         {
             if (_isFilled)
             {
-                grid[y][x] = '*';
+                grid[y][x] = _color.empty() ? '*' : _color[0];
             }
             else
             {
                if (x == startX || x == endX || y == startY || y == endY)
                {
-                    grid[y][x] = '*';
+                    grid[y][x] = _color.empty() ? '*' : _color[0];
                } 
             }
         }

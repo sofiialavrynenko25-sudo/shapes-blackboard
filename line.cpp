@@ -60,7 +60,7 @@ void Line::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int heig
         {
             for (int y = startY; y <= endY; y++)
             {
-                grid[y][_x] = '*';
+                grid[y][_x] = _color.empty() ? '*' : _color[0];
             }
         }
     }
@@ -73,7 +73,7 @@ void Line::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int heig
         {
             for (int x = startX; x <= endX; x++)
             {
-                grid[_y][x] = '*';
+                grid[_y][x] = _color.empty() ? '*' : _color[0];
             }
         }
     }

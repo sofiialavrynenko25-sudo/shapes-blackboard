@@ -84,7 +84,7 @@ void Triangle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int 
             {
                 if (CheckCoordinates(x, y))
                 {
-                    grid[y][x] = '*';
+                    grid[y][x] = _color.empty() ? '*' : _color[0];
                 }
             }
             else
@@ -98,7 +98,7 @@ void Triangle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int 
                     
                     if (isBorder)
                     {
-                        grid[y][x] = '*';
+                        grid[y][x] = _color.empty() ? '*' : _color[0];
                     } 
                 }
             }

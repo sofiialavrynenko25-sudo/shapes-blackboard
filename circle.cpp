@@ -47,14 +47,14 @@ void Circle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int he
             {
                 if (distSqrd <= std::pow(_radius, 2))
                 {
-                    grid[y][x] = '*';
+                    grid[y][x] = _color.empty() ? '*' : _color[0];
                 }
             }
             else
             {
                 if (distSqrd <= std::pow(_radius, 2) && distSqrd >= std::pow(abs(_radius - 1), 2))
                 {
-                    grid[y][x] = '*';
+                    grid[y][x] = _color.empty() ? '*' : _color[0];
                 }
             }
         }
