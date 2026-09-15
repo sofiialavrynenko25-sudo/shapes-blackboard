@@ -19,6 +19,8 @@ class Circle : public Shape
 
         virtual std::string ToString() const override;
 
+        virtual bool IsEqual(const Shape* other) const override;
+
         std::string GetType() const override;
 
         int GetRadius() const;

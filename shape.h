@@ -24,6 +24,8 @@ class Shape
 
         virtual std::string ToString() const = 0;
 
+        virtual bool IsEqual(const Shape* other) const = 0;
+
         virtual std::string GetType() const = 0;
 
         int GetId() const;

@@ -152,3 +152,24 @@ std::string Rectangle::ToString() const
             " | Color: " + _color +
             " | Filled: " + fill;
 }
+
+bool Rectangle::IsEqual(const Shape* other) const
+{
+    if (other == nullptr || GetType() != other -> GetType())
+    {
+        return false;
+    }
+
+    const Rectangle* rectangle = dynamic_cast<const Rectangle*>(other);
+
+    if (rectangle && _x == rectangle -> _x && _y == rectangle -> _y &&
+        _width == rectangle -> _width && _height == rectangle -> _height && 
+        _color == rectangle -> _color && _isFilled == rectangle -> _isFilled)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}

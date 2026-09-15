@@ -132,3 +132,24 @@ std::string Line::ToString() const
             " | Color: " + _color +
             " | Filled: cannot be filled";
 }
+
+bool Line::IsEqual(const Shape* other) const
+{
+    if (other == nullptr || GetType() != other -> GetType())
+    {
+        return false;
+    }
+
+    const Line* line = dynamic_cast<const Line*>(other);
+
+    if (line && _x == line -> _x && _y == line -> _y &&
+        _length == line -> _length && _color == line -> _color &&
+        _isVertical == line -> _isVertical)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}

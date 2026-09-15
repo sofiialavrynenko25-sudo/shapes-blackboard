@@ -185,3 +185,24 @@ std::string Triangle::ToString() const
             " | Color: " + _color +
             " | Filled: " + fill;
 }
+
+bool Triangle::IsEqual(const Shape* other) const
+{
+    if (other == nullptr || GetType() != other -> GetType())
+    {
+        return false;
+    }
+
+    const Triangle* triangle = dynamic_cast<const Triangle*>(other);
+
+    if (triangle && _x == triangle -> _x && _y == triangle -> _y &&
+        _side == triangle -> _side && _color == triangle -> _color &&
+        _isFilled == triangle -> _isFilled)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}

@@ -140,3 +140,24 @@ std::string Circle::ToString() const
             " | Color: " + _color +
             " | Filled: " + fill;
 }
+
+bool Circle::IsEqual(const Shape* other) const
+{
+    if (other == nullptr || GetType() != other -> GetType())
+    {
+        return false;
+    }
+
+    const Circle* circle = dynamic_cast<const Circle*>(other);
+
+    if (circle && _x == circle -> _x && _y == circle -> _y &&
+        _radius == circle -> _radius && _color == circle -> _color &&
+        _isFilled == circle -> _isFilled)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
