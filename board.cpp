@@ -137,6 +137,16 @@ std::vector<Shape*> Board::GetShapes()
     return _shapes;
 }
 
+Shape* Board::GetSelected()
+{
+    if (_selected == -1 || _selected >= _shapes.size())
+    {
+        return nullptr;
+    }
+    
+    return _shapes[_selected];
+}
+
 Board::~Board()
 {
     Clear();

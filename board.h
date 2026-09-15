@@ -29,5 +29,7 @@ class Board
 
         std::vector<Shape*> GetShapes();
 
+        Shape* GetSelected();
+
         ~Board();
 };
