@@ -105,3 +105,24 @@ void Triangle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int 
         }
     }
 }
+
+std::string Triangle::ToString() const
+{
+    std::string fill;
+
+    if (_isFilled)
+    {
+        fill = "yes";
+    }
+    else
+    {
+        fill = "no";
+    }
+
+    return "ID " + std::to_string(_id) +
+            " | Type: " + GetType() +
+            " | Side: " + std::to_string(_side) +
+            " | Position: (" + std::to_string(_x) + ", " + std::to_string(_y) + ")" +
+            " | Color: " + _color +
+            " | Filled: " + fill;
+}
