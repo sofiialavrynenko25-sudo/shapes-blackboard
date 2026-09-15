@@ -44,6 +44,243 @@ void CLI::Shapes()
     std::cout << "4. line [id, x, y, length, color]\n";
 }
 
+void CLI::Add() 
+{
+    int inputType = -1;
+
+    std::cout << "What shape do you want to add?\n";
+    std::cout << "1. circle\n";
+    std::cout << "2. triangle\n";
+    std::cout << "3. rectangle\n";
+    std::cout << "4. line\n\n";
+
+    std::cout << "Please, choose your option:\n";
+    if (!(std::cin >> inputType))
+    {
+        std::cout << "Invalid input.\n";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        return;
+    }
+    
+    int inputId = -1;
+
+    std::cout << "Please, enter an ID:\n";
+    if (!(std::cin >> inputId))
+    {
+        std::cout << "Invalid input.\n";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        return;
+    }
+
+    int inputX = -1;
+
+    std::cout << "Please, enter an X coordinate:\n";
+    if (!(std::cin >> inputX))
+    {
+        std::cout << "Invalid input.\n";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        return;
+    }
+
+    int inputY = -1;
+
+    std::cout << "Please, enter an Y coordinate:\n";
+    if (!(std::cin >> inputY))
+    {
+        std::cout << "Invalid input.\n";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        return;
+    }
+
+    std::string inputColor = "";
+
+    std::cout << "Please, enter a color:\n";
+    std::cin >> inputColor;
+
+    switch (inputType)
+    {
+        case 1:
+        {
+            int radius;
+            int fill;
+
+            std::cout << "Please, enter a radius:\n";
+            if (!(std::cin >> radius))
+            {
+                std::cout << "Invalid input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                return;
+            }
+
+            std::cout << "Please, enter a filling option (1 - filled, 0 - outlined):\n";
+            if (!(std::cin >> fill))
+            {
+                std::cout << "Invalid input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                return;
+            }
+
+            _board.AddShape(new Circle(inputId, inputX, inputY, radius, inputColor, fill != 0));
+
+            break;
+        }
+        case 2:
+        {
+            int side;
+            int fill;
+
+            std::cout << "Please, enter a side:\n";
+            if (!(std::cin >> side))
+            {
+                std::cout << "Invalid input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                return;
+            }
+
+            std::cout << "Please, enter a filling option (1 - filled, 0 - outlined):\n";
+            if (!(std::cin >> fill))
+            {
+                std::cout << "Invalid input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                return;
+            }
+
+            _board.AddShape(new Triangle(inputId, inputX, inputY, side, inputColor, fill != 0));
+
+            break;
+        }
+        case 3:
+        {
+            int width;
+            int height;
+            int fill;
+
+            std::cout << "Please, enter a width:\n";
+            if (!(std::cin >> width))
+            {
+                std::cout << "Invalid input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                return;
+            }
+
+            std::cout << "Please, enter a height:\n";
+            if (!(std::cin >> height))
+            {
+                std::cout << "Invalid input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                return;
+            }
+
+            std::cout << "Please, enter a filling option (1 - filled, 0 - outlined):\n";
+            if (!(std::cin >> fill))
+            {
+                std::cout << "Invalid input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                return;
+            }
+
+            _board.AddShape(new Rectangle(inputId, inputX, inputY, width, height, inputColor, fill != 0));
+
+            break;
+        }
+        case 4:
+        {
+            int length;
+            int vertical;
+
+            std::cout << "Please, enter a length:\n";
+            if (!(std::cin >> length))
+            {
+                std::cout << "Invalid input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                return;
+            }
+
+            std::cout << "Please, enter a position option (1 - vertical, 0 - horizontal):\n";
+            if (!(std::cin >> vertical))
+            {
+                std::cout << "Invalid input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                return;
+            }
+
+            _board.AddShape(new Line(inputId, inputX, inputY, length, vertical != 0, inputColor));
+
+            break;
+        }
+        default:
+        {
+            std::cout << "Invalid type.\n";
+            break;
+        }
+    }
+}
+
+void CLI::Select()
+{
+    int id;
+
+    std::cout << "Please, enter an ID to select a shape:\n";
+    if (!(std::cin >> id))
+    {
+        std::cout << "Invalid input.\n";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        return;
+    }
+
+    _board.SelectShape(id);
+}
+
+void CLI::Remove()
+{
+    _board.RemoveSelected();
+}
+
+void CLI::Move()
+{
+    int newX;
+    int newY;
+
+    std::cout << "Please, enter a new X coordinate:\n";
+    if (!(std::cin >> newX))
+    {
+        std::cout << "Invalid input.\n";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        return;
+    }
+
+    std::cout << "Please, enter a new Y coordinate:\n";
+    if (!(std::cin >> newY))
+    {
+        std::cout << "Invalid input.\n";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        return;
+    }
+
+    _board.MoveSelected(newX, newY);
+}
+
+void CLI::Clear()
+{
+    _board.Clear();
+}
+
 void CLI::Run()
 {
     int input = -1;
@@ -64,7 +301,6 @@ void CLI::Run()
         std::cout << "11 - Exit\n\n";
 
         std::cout << "Please, enter your option:\n";
-
         if (!(std::cin >> input))
         {
             std::cout << "Invalid input.\n";
