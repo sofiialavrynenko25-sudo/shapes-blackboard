@@ -2,6 +2,7 @@
 #include <vector> 
 #include <cmath>
 #include <string>
+#include <sstream>
 
 #include "shape.h"
 #include "circle.h"
@@ -10,412 +11,165 @@
 #include "line.h"
 #include "cli.h"
 
-void CLI::Draw()
+void CLI::Process(const std::string& input)
 {
-    std::cout << "Drawing the board...\n";
-    _board.Draw();
-}
-
-void CLI::List()
-{
-    std::vector<Shape*> shapes = _board.GetShapes();
-
-    if (shapes.empty())
+    if (input.empty())
     {
-        std::cout << "There are no shapes added, cannot list them.\n";
         return;
     }
 
-    std::cout << "All added shapes listed:\n";
+    std::stringstream ss(input);
+    std::string command;
+    ss >> command;
 
-    for (const auto& shape : shapes)
+    if (command == "draw")
     {
-        std::cout << shape -> ToString() + "\n";
+        _board.Draw();
     }
-}
-
-void CLI::Shapes()
-{
-    std::cout << "All possible shapes (with parameters):\n";
-
-    std::cout << "1. circle [id, x, y, radius, color, isFilled]\n";
-    std::cout << "2. triangle [id, x, y, side, color, isFilled]\n";
-    std::cout << "3. rectangle [id, x, y, width, height, color, isFilled]\n";
-    std::cout << "4. line [id, x, y, length, color]\n";
-}
-
-void CLI::Add() 
-{
-    int width = _board.GetWidth();
-    int height = _board.GetHeight();
-
-    int inputType = -1;
-
-    std::cout << "What shape do you want to add?\n";
-    std::cout << "1. circle\n";
-    std::cout << "2. triangle\n";
-    std::cout << "3. rectangle\n";
-    std::cout << "4. line\n\n";
-
-    std::cout << "Please, choose your option:\n";
-    if (!(std::cin >> inputType))
+    else if (command == "list")
     {
-        std::cout << "Invalid input.\n";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        return;
-    }
-    
-    int inputId = -1;
+        std::vector<Shape*> shapes = _board.GetShapes();
 
-    std::cout << "Please, enter an ID:\n";
-    if (!(std::cin >> inputId))
-    {
-        std::cout << "Invalid input.\n";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        return;
-    }
-
-    int inputX = -1;
-
-    std::cout << "Please, enter an X coordinate:\n";
-    if (!(std::cin >> inputX))
-    {
-        std::cout << "Invalid input.\n";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        return;
-    }
-
-    if (inputX > width)
-    {
-        std::cout << "Coordinate X is out of range.\n";
-        return;
-    }
-
-    int inputY = -1;
-
-    std::cout << "Please, enter an Y coordinate:\n";
-    if (!(std::cin >> inputY))
-    {
-        std::cout << "Invalid input.\n";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        return;
-    }
-
-    if (inputY > height)
-    {
-        std::cout << "Coordinate Y is out of range.\n";
-        return;
-    }
-
-    std::string inputColor = "";
-
-    std::cout << "Please, enter a color:\n";
-    std::cin >> inputColor;
-
-    switch (inputType)
-    {
-        case 1:
+        if (shapes.empty())
         {
-            int radius;
-            int fill;
-
-            std::cout << "Please, enter a radius:\n";
-            if (!(std::cin >> radius))
-            {
-                std::cout << "Invalid input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-                return;
-            }
-
-            std::cout << "Please, enter a filling option (1 - filled, 0 - outlined):\n";
-            if (!(std::cin >> fill))
-            {
-                std::cout << "Invalid input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-                return;
-            }
-
-            _board.AddShape(new Circle(inputId, inputX, inputY, radius, inputColor, fill != 0));
-
-            break;
+            std::cout << "There are no shapes added, cannot list them.\n";
+            return;
         }
-        case 2:
+        
+        std::cout << "All shapes added: \n\n";
+
+        for (const auto& shape : shapes)
         {
-            int side;
-            int fill;
+            std::cout << shape -> ToString() << "\n";
+        };
+    }
+    else if (command == "shapes")
+    {
+        std::cout << "All available shapes:\n\n";
+        std::cout << "circle [id] [x] [y] [radius] [color] [fill option]\n";
+        std::cout << "triangle [id] [x] [y] [side] [color] [fill option]\n";
+        std::cout << "rectangle [id] [x] [y] [width] [height] [color] [fill option]\n";
+        std::cout << "line [id] [x] [y] [length] [position option] [color] [fill option]\n";
+    }
+    else if (command == "add")
+    {
+        std::string type;
 
-            std::cout << "Please, enter a side:\n";
-            if (!(std::cin >> side))
-            {
-                std::cout << "Invalid input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-                return;
-            }
-
-            std::cout << "Please, enter a filling option (1 - filled, 0 - outlined):\n";
-            if (!(std::cin >> fill))
-            {
-                std::cout << "Invalid input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-                return;
-            }
-
-            _board.AddShape(new Triangle(inputId, inputX, inputY, side, inputColor, fill != 0));
-
-            break;
-        }
-        case 3:
+        if (!(ss >> type))
         {
-            int width;
-            int height;
-            int fill;
-
-            std::cout << "Please, enter a width:\n";
-            if (!(std::cin >> width))
-            {
-                std::cout << "Invalid input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-                return;
-            }
-
-            std::cout << "Please, enter a height:\n";
-            if (!(std::cin >> height))
-            {
-                std::cout << "Invalid input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-                return;
-            }
-
-            std::cout << "Please, enter a filling option (1 - filled, 0 - outlined):\n";
-            if (!(std::cin >> fill))
-            {
-                std::cout << "Invalid input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-                return;
-            }
-
-            _board.AddShape(new Rectangle(inputId, inputX, inputY, width, height, inputColor, fill != 0));
-
-            break;
-        }
-        case 4:
-        {
-            int length;
-            int vertical;
-
-            std::cout << "Please, enter a length:\n";
-            if (!(std::cin >> length))
-            {
-                std::cout << "Invalid input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-                return;
-            }
-
-            std::cout << "Please, enter a position option (1 - vertical, 0 - horizontal):\n";
-            if (!(std::cin >> vertical))
-            {
-                std::cout << "Invalid input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-                return;
-            }
-
-            _board.AddShape(new Line(inputId, inputX, inputY, length, vertical != 0, inputColor));
-
-            break;
-        }
-        default:
-        {
-            std::cout << "Invalid type.\n";
-            break;
-        }
-    }
-}
-
-void CLI::Select()
-{
-    int id;
-
-    std::cout << "Please, enter an ID to select a shape:\n";
-    if (!(std::cin >> id))
-    {
-        std::cout << "Invalid input.\n";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        return;
-    }
-
-    _board.SelectShape(id);
-}
-
-void CLI::Remove()
-{
-    _board.RemoveSelected();
-}
-
-void CLI::Edit()
-{
-    Shape* selected = _board.GetSelected();
-
-    if (selected == nullptr)
-    {
-        std::cout << "Nothing is selected, cannot edit.\n";
-        return;
-    }
-
-    selected -> EditParameters();
-}
-
-void CLI::Paint()
-{
-    Shape* selected = _board.GetSelected();
-
-    if (selected == nullptr)
-    {
-        std::cout << "Nothing is selected, cannot paint.\n";
-        return;
-    }
-
-    std::string newColor;
-    std::cout << "Please, enter a new color:\n";
-    std::cin >> newColor; 
-
-    selected -> SetColor(newColor);
-}
-
-void CLI::Move()
-{
-    int newX;
-    int newY;
-
-    std::cout << "Please, enter a new X coordinate:\n";
-    if (!(std::cin >> newX))
-    {
-        std::cout << "Invalid input.\n";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        return;
-    }
-
-    std::cout << "Please, enter a new Y coordinate:\n";
-    if (!(std::cin >> newY))
-    {
-        std::cout << "Invalid input.\n";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        return;
-    }
-
-    _board.MoveSelected(newX, newY);
-}
-
-void CLI::Clear()
-{
-    _board.Clear();
-}
-
-void CLI::Run()
-{
-    int input = -1;
-
-    while (input != 11)
-    {
-        std::cout << "\nMENU\n";
-        std::cout << "1 - Draw\n";
-        std::cout << "2 - List\n";
-        std::cout << "3 - Shapes\n";
-        std::cout << "4 - Add\n";
-        std::cout << "5 - Select\n";
-        std::cout << "6 - Remove\n";
-        std::cout << "7 - Edit\n";
-        std::cout << "8 - Paint\n";
-        std::cout << "9 - Move\n";
-        std::cout << "10 - Clear\n";
-        std::cout << "11 - Exit\n\n";
-
-        std::cout << "Please, enter your option:\n";
-        if (!(std::cin >> input))
-        {
-            std::cout << "Invalid input.\n";
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-            continue;
+            std::cout << "Invalid shape type.\n";
+            return;
         }
 
-        switch (input)
+        if (type == "circle")
         {
-            case 1: 
+            int id, x, y, radius, fill;
+            std::string color;
+            
+            if (!(ss >> id >> x >> y >> radius >> color >> fill))
             {
-                Draw();
-                break;
+                std::cout << "Invalid arguments for circle.\n";
+                return;
             }
-            case 2:
-            {
-                List();
-                break;
-            }
-            case 3:
-            {
-                Shapes();
-                break;
-            }
-            case 4:
-            {
-                Add();
-                break;
-            }
-            case 5:
-            {
-                Select();
-                break;
-            }
-            case 6:
-            {
-                Remove();
-                break;
-            }
-            case 7:
-            {
-                Edit();
-                break;
-            }
-            case 8:
-            {
-                Paint();
-                break;
-            }
-            case 9:
-            {
-                Move();
-                break;
-            }
-            case 10:
-            {
-                Clear();
-                break;
-            }
-            case 11:
-            {
-                std::cout << "Exiting the program...\n";
-                break;
-            }
-            default:
-            {
-                std::cout << "Invalid option.\n";
-                break;
-            }
+
+            _board.AddShape(new Circle(id, x, y, radius, color, fill != 0));
         }
+        else if (type == "triangle")
+        {
+            int id, x, y, side, fill;
+            std::string color;
+            
+            if (!(ss >> id >> x >> y >> side >> color >> fill))
+            {
+                std::cout << "Invalid arguments for triangle.\n";
+                return;
+            }
+
+            _board.AddShape(new Triangle(id, x, y, side, color, fill != 0));
+        }
+        else if (type == "rectangle")
+        {
+            int id, x, y, width, height, fill;
+            std::string color;
+            
+            if (!(ss >> id >> x >> y >> width >> height >> color >> fill))
+            {
+                std::cout << "Invalid arguments for rectangle.\n";
+                return;
+            }
+
+            _board.AddShape(new Rectangle(id, x, y, width, height, color, fill != 0));
+        }
+        else if (type == "line")
+        {
+            int id, x, y, length, isVert;
+            std::string color;
+            
+            if (!(ss >> id >> x >> y >> length >> isVert >> color))
+            {
+                std::cout << "Invalid arguments for line.\n";
+                return;
+            }
+
+            _board.AddShape(new Line(id, x, y, length, isVert != 0, color));
+        }
+        else
+        {
+            std::cout << "Unknown shape type.\n";
+        }
+    }
+    else if (command == "select")
+    {
+        int id;
+
+        if (!(ss >> id))
+        {
+            std::cout << "No ID for selection.\n";
+            return;
+        }
+
+        _board.SelectShape(id);
+    }
+    else if (command == "remove")
+    {
+        _board.RemoveSelected();
+    }
+    else if (command == "paint")
+    {
+        std::string color;
+
+        if (!(ss >> color))
+        {
+            std::cout << "Invalid color argument.\n";
+            return;
+        }
+
+        Shape* selected = _board.GetSelected();
+
+        if (selected == nullptr)
+        {
+            std::cout << "No shape selected.\n";
+            return;
+        }
+
+        selected ->SetColor(color);
+
+        std::cout << selected -> GetId() << " " << selected -> GetType() << " was painted.\n";
+    }
+    else if (command == "move")
+    {
+        int newX, newY;
+
+        if (!(ss >> newX >> newY))
+        {
+            std::cout << "Invalid new coordinates arguments.\n";
+            return;
+        }
+
+        _board.MoveSelected(newX, newY);
+    }
+    else if (command == "clear")
+    {
+        _board.Clear();
     }
 }

@@ -16,27 +16,7 @@ class CLI
         CLI(Board& board)
             : _board(board) {}
         
-        void Draw();
-
-        void List();
-
-        void Shapes();
-
-        void Add();
-
-        void Select();
-
-        void Remove();
-
-        void Edit();
-
-        void Paint();
-
-        void Move();
-
-        void Clear();
-
-        void Run();
+        void Process(const std::string& inpu);
 
         ~CLI() = default;
 };
