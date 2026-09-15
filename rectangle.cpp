@@ -59,3 +59,25 @@ void Rectangle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int
         }
     }
 }
+
+std::string Rectangle::ToString() const
+{
+    std::string fill;
+
+    if (_isFilled)
+    {
+        fill = "yes";
+    }
+    else
+    {
+        fill = "no";
+    }
+
+    return "ID " + std::to_string(_id) +
+            " | Type: " + GetType() +
+            " | Width: " + std::to_string(_width) +
+            " | Height: " + std::to_string(_height) +
+            " | Position: (" + std::to_string(_x) + ", " + std::to_string(_y) + ")" +
+            " | Color: " + _color +
+            " | Filled: " + fill;
+}
