@@ -60,3 +60,24 @@ void Circle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int he
         }
     }
 }
+
+std::string Circle::ToString() const
+{
+    std::string fill;
+
+    if (_isFilled)
+    {
+        fill = "yes";
+    }
+    else
+    {
+        fill = "no";
+    }
+
+    return "ID " + std::to_string(_id) +
+            " | Type: " + GetType() +
+            " | Radius: " + std::to_string(_radius) +
+            " | Position: (" + std::to_string(_x) + ", " + std::to_string(_y) + ")" +
+            " | Color: " + _color +
+            " | Filled: " + fill;
+}

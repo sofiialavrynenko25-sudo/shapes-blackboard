@@ -15,6 +15,8 @@ class Circle : public Shape
 
         virtual void DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int height) const override;
 
+        virtual std::string ToString() const override;
+
         std::string GetType() const override;
 
         int GetRadius() const;
