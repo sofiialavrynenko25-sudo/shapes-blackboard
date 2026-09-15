@@ -35,3 +35,8 @@ void Shape::SetColor(const std::string& newColor)
 {
     _color = newColor;
 }
+
+void Shape::SetFilled(bool newIsFilled)
+{
+    _isFilled = newIsFilled;
+}

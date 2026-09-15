@@ -20,7 +20,7 @@ class Shape
 
         virtual void DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int height) const = 0;
 
-        virtual bool EditParameters() = 0;
+        virtual void EditParameters() = 0;
 
         virtual std::string ToString() const = 0;
 
@@ -39,6 +39,8 @@ class Shape
         void SetParameters(int newX, int newY);
         
         void SetColor(const std::string& newColor);
+        
+        void SetFilled(bool newIsFilled);
 
         virtual ~Shape() = default;
 };
