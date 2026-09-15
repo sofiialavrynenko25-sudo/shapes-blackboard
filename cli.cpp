@@ -22,6 +22,9 @@ void CLI::Process(const std::string& input)
     std::string command;
     ss >> command;
 
+    int boardW = _board.GetWidth();
+    int boardH = _board.GetHeight();
+
     if (command == "draw")
     {
         _board.Draw();
@@ -49,7 +52,7 @@ void CLI::Process(const std::string& input)
         std::cout << "circle [id] [x] [y] [radius] [color] [fill option]\n";
         std::cout << "triangle [id] [x] [y] [side] [color] [fill option]\n";
         std::cout << "rectangle [id] [x] [y] [width] [height] [color] [fill option]\n";
-        std::cout << "line [id] [x] [y] [length] [position option] [color] [fill option]\n";
+        std::cout << "line [id] [x] [y] [length] [position option] [color]\n";
     }
     else if (command == "add")
     {
@@ -74,6 +77,12 @@ void CLI::Process(const std::string& input)
                 return;
             }
 
+            if (radius * 2 >= boardH || radius * 2 >= boardW)
+            {
+                std::cout << "Shape cannot be bigger than a board.\n";
+                return;
+            }
+
             newShape = new Circle(id, x, y, radius, color, fill != 0);
         }
         else if (type == "triangle")
@@ -84,6 +93,14 @@ void CLI::Process(const std::string& input)
             if (!(ss >> id >> x >> y >> side >> color >> fill))
             {
                 std::cout << "Invalid arguments for triangle.\n";
+                return;
+            }
+            
+            float triangleH = (side * std::sqrt(3)) / 2.0;
+
+            if (triangleH >= boardH || side >= boardW)
+            {
+                std::cout << "Shape cannot be bigger than a board.\n";
                 return;
             }
 
@@ -100,6 +117,12 @@ void CLI::Process(const std::string& input)
                 return;
             }
 
+            if (width >= boardW || height >= boardH)
+            {
+                std::cout << "Shape cannot be bigger than a board.\n";
+                return;
+            }
+
             newShape = new Rectangle(id, x, y, width, height, color, fill != 0);
         }
         else if (type == "line")
@@ -110,6 +133,12 @@ void CLI::Process(const std::string& input)
             if (!(ss >> id >> x >> y >> length >> isVert >> color))
             {
                 std::cout << "Invalid arguments for line.\n";
+                return;
+            }
+
+            if ((isVert && length >= boardH) || (!isVert && length >= boardW))
+            {
+                std::cout << "Shape cannot be bigger than a board.\n";
                 return;
             }
 
@@ -152,7 +181,7 @@ void CLI::Process(const std::string& input)
             return;
         }
 
-        if (selected -> EditParameters(ss))
+        if (selected -> EditParameters(ss, _board.GetWidth(), _board.GetHeight()))
         {
             std::cout << selected -> GetId() << " " << selected -> GetType() << " parameters updated.\n";
         }

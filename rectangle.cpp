@@ -61,12 +61,18 @@ void Rectangle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int
     }
 }
 
-bool Rectangle::EditParameters(std::stringstream& ss)
+bool Rectangle::EditParameters(std::stringstream& ss, int boardWidth, int boardHeight)
 {
     int newWidth, newHeight;
 
     if (!(ss >> newWidth >> newHeight) || newWidth <= 0 || newHeight <= 0)
     {
+        return false;
+    }
+
+    if (newWidth >= boardWidth || newHeight >= boardHeight)
+    {
+        std::cout << "Shape cannot be bigger than a board.\n";
         return false;
     }
 

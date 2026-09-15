@@ -80,12 +80,18 @@ void Line::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int heig
     }
 }
 
-bool Line::EditParameters(std::stringstream& ss)
+bool Line::EditParameters(std::stringstream& ss, int boardWidth, int boardHeight)
 {
     int newLength;
 
     if (!(ss >> newLength) || newLength <= 0)
     {
+        return false;
+    }
+
+    if ((_isVertical && newLength >= boardHeight) || (!_isVertical && newLength >= boardWidth))
+    {
+        std::cout << "Shape cannot be bigger than a board.\n";
         return false;
     }
 

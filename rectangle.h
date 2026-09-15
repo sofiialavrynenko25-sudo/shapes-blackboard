@@ -16,7 +16,7 @@ class Rectangle : public Shape
 
         virtual void DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int height) const override;
 
-        virtual bool EditParameters(std::stringstream& ss) override;
+        virtual bool EditParameters(std::stringstream& ss, int boardWidth, int boardHeight) override;
 
         virtual std::string ToString() const override;
 

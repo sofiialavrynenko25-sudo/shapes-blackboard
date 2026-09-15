@@ -21,7 +21,7 @@ class Shape
 
         virtual void DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int height) const = 0;
 
-        virtual bool EditParameters(std::stringstream& ss) = 0;
+        virtual bool EditParameters(std::stringstream& ss, int boardWidth, int boardHeight) = 0;
 
         virtual std::string ToString() const = 0;
 

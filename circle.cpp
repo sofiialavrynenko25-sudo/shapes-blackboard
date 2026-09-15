@@ -62,12 +62,18 @@ void Circle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int he
     }
 }
 
-bool Circle::EditParameters(std::stringstream& ss)
+bool Circle::EditParameters(std::stringstream& ss, int boardWidth, int boardHeight)
 {
     int newRadius;
 
     if (!(ss >> newRadius) || newRadius <= 0)
     {
+        return false;
+    }
+
+    if (newRadius * 2 >= boardHeight || newRadius * 2 >= boardWidth)
+    {
+        std::cout << "Shape cannot be bigger than a board.\n";
         return false;
     }
 

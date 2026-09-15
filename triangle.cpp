@@ -107,12 +107,20 @@ void Triangle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int 
     }
 }
 
-bool Triangle::EditParameters(std::stringstream& ss)
+bool Triangle::EditParameters(std::stringstream& ss, int boardWidth, int boardHeight)
 {
     int newSide;
 
     if (!(ss >> newSide) || newSide <= 0)
     {
+        return false;
+    }
+
+    float triangleH = (newSide * std::sqrt(3)) / 2.0;
+
+    if (triangleH >= boardHeight || newSide >= boardWidth)
+    {
+        std::cout << "Shape cannot be bigger than a board.\n";
         return false;
     }
 

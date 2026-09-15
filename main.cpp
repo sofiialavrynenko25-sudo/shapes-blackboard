@@ -4,7 +4,7 @@
 
 int main()
 {
-    Board board(20, 20);
+    Board board(100, 100);
     CLI cli(board);
 
     std::string input;
