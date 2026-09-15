@@ -61,6 +61,65 @@ void Circle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int he
     }
 }
 
+void Circle::EditParameters()
+{
+    std::cout << "What do you want to edit?\n";
+    std::cout << "1. radius\n";
+    std::cout << "2. color\n";
+    std::cout << "3. fill option";
+
+    int inputEdit;
+
+    std::cout << "Please, choose your option:\n";
+    if (!(std::cin >> inputEdit))
+    {
+        std::cout << "Invalid input.\n";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        return;
+    }
+
+    switch (inputEdit)
+    {
+        case 1:
+        {
+            std::cout << "Enter new radius:\n";
+            if(!(std::cin >> _radius) || _radius <= 0)
+            {
+                std::cout << "Invalid radius input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n'); 
+            }
+            break;
+        }
+        case 2:
+        {
+            std::cout << "Enter new color:\n";
+            std::cin >> _color;
+            break;
+        }
+        case 3:
+        {
+            int fill;
+            std::cout << "Enter fill option (1 - filled, 0 - outlined):\n";
+            if (!(std::cin >> fill))
+            {
+                std::cout << "Invalid fill option input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                return;
+            }
+            _isFilled = (fill != 0);
+            break;
+        }
+        default:
+        {
+            std::cout << "Invalid option.\n";
+            break;
+        }
+    }
+}
+
 std::string Circle::ToString() const
 {
     std::string fill;
