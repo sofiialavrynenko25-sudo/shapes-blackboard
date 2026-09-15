@@ -10,10 +10,10 @@
 class CLI 
 {
     private:
-        Board _board;
+        Board& _board;
 
     public:
-        CLI(const Board& board)
+        CLI(Board& board)
             : _board(board) {}
         
         void Draw();
@@ -36,5 +36,7 @@ class CLI
 
         void Clear();
 
-        ~CLI();
+        void Run();
+
+        ~CLI() = default;
 };
