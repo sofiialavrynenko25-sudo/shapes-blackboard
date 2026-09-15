@@ -16,7 +16,7 @@ class CLI
         CLI(Board& board)
             : _board(board) {}
         
-        void Process(const std::string& inpu);
+        void Process(const std::string& input);
 
         ~CLI() = default;
 };

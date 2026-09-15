@@ -61,6 +61,8 @@ void CLI::Process(const std::string& input)
             return;
         }
 
+        Shape* newShape = nullptr;
+
         if (type == "circle")
         {
             int id, x, y, radius, fill;
@@ -72,7 +74,7 @@ void CLI::Process(const std::string& input)
                 return;
             }
 
-            _board.AddShape(new Circle(id, x, y, radius, color, fill != 0));
+            newShape = new Circle(id, x, y, radius, color, fill != 0);
         }
         else if (type == "triangle")
         {
@@ -85,7 +87,7 @@ void CLI::Process(const std::string& input)
                 return;
             }
 
-            _board.AddShape(new Triangle(id, x, y, side, color, fill != 0));
+            newShape = new Triangle(id, x, y, side, color, fill != 0);
         }
         else if (type == "rectangle")
         {
@@ -98,7 +100,7 @@ void CLI::Process(const std::string& input)
                 return;
             }
 
-            _board.AddShape(new Rectangle(id, x, y, width, height, color, fill != 0));
+            newShape = new Rectangle(id, x, y, width, height, color, fill != 0);
         }
         else if (type == "line")
         {
@@ -111,11 +113,17 @@ void CLI::Process(const std::string& input)
                 return;
             }
 
-            _board.AddShape(new Line(id, x, y, length, isVert != 0, color));
+            newShape = new Line(id, x, y, length, isVert != 0, color);
         }
         else
         {
             std::cout << "Unknown shape type.\n";
+            return;
+        }
+
+        if (newShape != nullptr)
+        {
+            _board.AddShape(newShape);
         }
     }
     else if (command == "select")
@@ -133,6 +141,25 @@ void CLI::Process(const std::string& input)
     else if (command == "remove")
     {
         _board.RemoveSelected();
+    }
+    else if (command == "edit")
+    {
+        Shape* selected = _board.GetSelected();
+
+        if (selected == nullptr)
+        {
+            std::cout << "No shape selected.\n";
+            return;
+        }
+
+        if (selected -> EditParameters(ss))
+        {
+            std::cout << selected -> GetId() << " " << selected -> GetType() << " parameters updated.\n";
+        }
+        else
+        {
+            std::cout << "Invalid editing parameters.\n";
+        }
     }
     else if (command == "paint")
     {
@@ -171,5 +198,9 @@ void CLI::Process(const std::string& input)
     else if (command == "clear")
     {
         _board.Clear();
+    }
+    else
+    {
+        std::cout << "Unknown command.\n";
     }
 }

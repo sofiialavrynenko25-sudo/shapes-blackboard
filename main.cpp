@@ -4,10 +4,22 @@
 
 int main()
 {
-    Board board(40, 20);
+    Board board(20, 20);
     CLI cli(board);
 
-    cli.Run();
-    
+    std::string input;
+
+    while (true) 
+    {
+        std::cout << "> ";
+
+        if (!std::getline(std::cin, input) || input == "exit")
+        {
+            break;
+        }
+
+        cli.Process(input);
+    }
+
     return 0;
 }
