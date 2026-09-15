@@ -22,6 +22,8 @@ class Shape
 
         virtual bool EditParameters() = 0;
 
+        virtual std::string ToString() const = 0;
+
         virtual std::string GetType() const = 0;
 
         int GetId() const;
