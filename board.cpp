@@ -147,6 +147,17 @@ Shape* Board::GetSelected()
     return _shapes[_selected];
 }
 
+int Board::GetWidth()
+{
+    return _width;
+}
+
+int Board::GetHeight()
+{
+    return _height;
+}
+
+
 Board::~Board()
 {
     Clear();

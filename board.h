@@ -31,5 +31,9 @@ class Board
 
         Shape* GetSelected();
 
+        int GetWidth();
+
+        int GetHeight();
+
         ~Board();
 };
