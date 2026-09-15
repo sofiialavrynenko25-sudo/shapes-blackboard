@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <sstream>
 #include "rectangle.h"
 
 std::string Rectangle::GetType() const
@@ -60,75 +61,18 @@ void Rectangle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int
     }
 }
 
-void Rectangle::EditParameters()
+bool Rectangle::EditParameters(std::stringstream& ss)
 {
-    std::cout << "What do you want to edit?\n";
-    std::cout << "1. width\n";
-    std::cout << "2. height\n";
-    std::cout << "3. color\n";
-    std::cout << "4. fill option\n";
+    int newWidth, newHeight;
 
-    int inputEdit;
-
-    std::cout << "Please, choose your option:\n";
-    if (!(std::cin >> inputEdit))
+    if (!(ss >> newWidth >> newHeight) || newWidth <= 0 || newHeight <= 0)
     {
-        std::cout << "Invalid input.\n";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        return;
+        return false;
     }
 
-    switch (inputEdit)
-    {
-        case 1:
-        {
-            std::cout << "Enter new width:\n";
-            if(!(std::cin >> _width) || _width <= 0)
-            {
-                std::cout << "Invalid width input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n'); 
-            }
-            break;
-        }
-        case 2:
-        {
-            std::cout << "Enter new height:\n";
-            if(!(std::cin >> _height) || _height <= 0)
-            {
-                std::cout << "Invalid height input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n'); 
-            }
-            break;
-        }
-        case 3:
-        {
-            std::cout << "Enter new color:\n";
-            std::cin >> _color;
-            break;
-        }
-        case 4:
-        {
-            int fill;
-            std::cout << "Enter fill option (1 - filled, 0 - outlined):\n";
-            if (!(std::cin >> fill))
-            {
-                std::cout << "Invalid fill option input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-                return;
-            }
-            _isFilled = (fill != 0);
-            break;
-        }
-        default:
-        {
-            std::cout << "Invalid option.\n";
-            break;
-        }
-    }
+    _width = newWidth;
+    _height = newHeight;
+    return true;
 }
 
 std::string Rectangle::ToString() const

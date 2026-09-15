@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <sstream>
 #include "line.h"
 
 std::string Line::GetType() const
@@ -79,48 +80,17 @@ void Line::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int heig
     }
 }
 
-void Line::EditParameters()
+bool Line::EditParameters(std::stringstream& ss)
 {
-    std::cout << "What do you want to edit?\n";
-    std::cout << "1. length\n";
-    std::cout << "2. color\n";
+    int newLength;
 
-    int inputEdit;
-
-    std::cout << "Please, choose your option:\n";
-    if (!(std::cin >> inputEdit))
+    if (!(ss >> newLength) || newLength <= 0)
     {
-        std::cout << "Invalid input.\n";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        return;
+        return false;
     }
 
-    switch (inputEdit)
-    {
-        case 1:
-        {
-            std::cout << "Enter new length:\n";
-            if(!(std::cin >> _length) || _length <= 0)
-            {
-                std::cout << "Invalid length input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n'); 
-            }
-            break;
-        }
-        case 2:
-        {
-            std::cout << "Enter new color:\n";
-            std::cin >> _color;
-            break;
-        }
-        default:
-        {
-            std::cout << "Invalid option.\n";
-            break;
-        }
-    }
+    _length = newLength;
+    return true;
 }
 
 std::string Line::ToString() const

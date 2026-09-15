@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <sstream>
 #include "triangle.h"
 
 std::string Triangle::GetType() const
@@ -106,63 +107,17 @@ void Triangle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int 
     }
 }
 
-void Triangle::EditParameters()
+bool Triangle::EditParameters(std::stringstream& ss)
 {
-    std::cout << "What do you want to edit?\n";
-    std::cout << "1. side\n";
-    std::cout << "2. color\n";
-    std::cout << "3. fill option\n";
+    int newSide;
 
-    int inputEdit;
-
-    std::cout << "Please, choose your option:\n";
-    if (!(std::cin >> inputEdit))
+    if (!(ss >> newSide) || newSide <= 0)
     {
-        std::cout << "Invalid input.\n";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        return;
+        return false;
     }
 
-    switch (inputEdit)
-    {
-        case 1:
-        {
-            std::cout << "Enter new side:\n";
-            if(!(std::cin >> _side) || _side <= 0)
-            {
-                std::cout << "Invalid side input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n'); 
-            }
-            break;
-        }
-        case 2:
-        {
-            std::cout << "Enter new color:\n";
-            std::cin >> _color;
-            break;
-        }
-        case 3:
-        {
-            int fill;
-            std::cout << "Enter fill option (1 - filled, 0 - outlined):\n";
-            if (!(std::cin >> fill))
-            {
-                std::cout << "Invalid fill option input.\n";
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
-                return;
-            }
-            _isFilled = (fill != 0);
-            break;
-        }
-        default:
-        {
-            std::cout << "Invalid option.\n";
-            break;
-        }
-    }
+    _side = newSide;
+    return true;
 }
 
 std::string Triangle::ToString() const
