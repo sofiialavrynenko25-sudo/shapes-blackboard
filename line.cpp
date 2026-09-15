@@ -78,3 +78,13 @@ void Line::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int heig
         }
     }
 }
+
+std::string Line::ToString() const
+{
+    return "ID " + std::to_string(_id) +
+            " | Type: " + GetType() +
+            " | Length: " + std::to_string(_length) +
+            " | Position: (" + std::to_string(_x) + ", " + std::to_string(_y) + ")" +
+            " | Color: " + _color +
+            " | Filled: cannot be filled";
+}
