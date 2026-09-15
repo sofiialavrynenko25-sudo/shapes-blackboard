@@ -66,7 +66,7 @@ void Circle::EditParameters()
     std::cout << "What do you want to edit?\n";
     std::cout << "1. radius\n";
     std::cout << "2. color\n";
-    std::cout << "3. fill option";
+    std::cout << "3. fill option\n";
 
     int inputEdit;
 

@@ -66,7 +66,7 @@ void Rectangle::EditParameters()
     std::cout << "1. width\n";
     std::cout << "2. height\n";
     std::cout << "3. color\n";
-    std::cout << "4. fill option";
+    std::cout << "4. fill option\n";
 
     int inputEdit;
 
