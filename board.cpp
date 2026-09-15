@@ -44,6 +44,14 @@ void Board::AddShape(Shape* shape)
         if (existShape -> GetId() == shape -> GetId())
         {
             std::cout << "Cannot add a shape with existing ID.\n";
+            delete shape;
+            return;
+        }
+
+        if (existShape -> IsEqual(shape))
+        {
+            std::cout << "Cannot add a shape with the same type and parameters.\n";
+            delete shape;
             return;
         }
     }
