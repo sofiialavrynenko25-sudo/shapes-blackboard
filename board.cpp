@@ -132,6 +132,11 @@ void Board::Clear()
     std::cout << "Board was cleared.\n";
 }
 
+std::vector<Shape*> Board::GetShapes()
+{
+    return _shapes;
+}
+
 Board::~Board()
 {
     Clear();

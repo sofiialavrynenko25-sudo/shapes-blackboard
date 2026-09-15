@@ -27,5 +27,7 @@ class Board
 
         void Clear();
 
+        std::vector<Shape*> GetShapes();
+
         ~Board();
 };
