@@ -46,6 +46,9 @@ void CLI::Shapes()
 
 void CLI::Add() 
 {
+    int width = _board.GetWidth();
+    int height = _board.GetHeight();
+
     int inputType = -1;
 
     std::cout << "What shape do you want to add?\n";
@@ -85,6 +88,12 @@ void CLI::Add()
         return;
     }
 
+    if (inputX > width)
+    {
+        std::cout << "Coordinate X is out of range.\n";
+        return;
+    }
+
     int inputY = -1;
 
     std::cout << "Please, enter an Y coordinate:\n";
@@ -93,6 +102,12 @@ void CLI::Add()
         std::cout << "Invalid input.\n";
         std::cin.clear();
         std::cin.ignore(10000, '\n');
+        return;
+    }
+
+    if (inputY > height)
+    {
+        std::cout << "Coordinate Y is out of range.\n";
         return;
     }
 
@@ -250,6 +265,36 @@ void CLI::Remove()
     _board.RemoveSelected();
 }
 
+void CLI::Edit()
+{
+    Shape* selected = _board.GetSelected();
+
+    if (selected == nullptr)
+    {
+        std::cout << "Nothing is selected, cannot edit.\n";
+        return;
+    }
+
+    selected -> EditParameters();
+}
+
+void CLI::Paint()
+{
+    Shape* selected = _board.GetSelected();
+
+    if (selected == nullptr)
+    {
+        std::cout << "Nothing is selected, cannot paint.\n";
+        return;
+    }
+
+    std::string newColor;
+    std::cout << "Please, enter a new color:\n";
+    std::cin >> newColor; 
+
+    selected -> SetColor(newColor);
+}
+
 void CLI::Move()
 {
     int newX;
@@ -328,37 +373,37 @@ void CLI::Run()
             }
             case 4:
             {
-                std::cout << "No implementation yet.\n";
+                Add();
                 break;
             }
             case 5:
             {
-                std::cout << "No implementation yet.\n";
+                Select();
                 break;
             }
             case 6:
             {
-                std::cout << "No implementation yet.\n";
+                Remove();
                 break;
             }
             case 7:
             {
-                std::cout << "No implementation yet.\n";
+                Edit();
                 break;
             }
             case 8:
             {
-                std::cout << "No implementation yet.\n";
+                Paint();
                 break;
             }
             case 9:
             {
-                std::cout << "No implementation yet.\n";
+                Move();
                 break;
             }
             case 10:
             {
-                std::cout << "No implementation yet.\n";
+                Clear();
                 break;
             }
             case 11:
