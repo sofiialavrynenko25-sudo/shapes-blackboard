@@ -79,6 +79,50 @@ void Line::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int heig
     }
 }
 
+void Line::EditParameters()
+{
+    std::cout << "What do you want to edit?\n";
+    std::cout << "1. length\n";
+    std::cout << "2. color\n";
+
+    int inputEdit;
+
+    std::cout << "Please, choose your option:\n";
+    if (!(std::cin >> inputEdit))
+    {
+        std::cout << "Invalid input.\n";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        return;
+    }
+
+    switch (inputEdit)
+    {
+        case 1:
+        {
+            std::cout << "Enter new length:\n";
+            if(!(std::cin >> _length) || _length <= 0)
+            {
+                std::cout << "Invalid length input.\n";
+                std::cin.clear();
+                std::cin.ignore(10000, '\n'); 
+            }
+            break;
+        }
+        case 2:
+        {
+            std::cout << "Enter new color:\n";
+            std::cin >> _color;
+            break;
+        }
+        default:
+        {
+            std::cout << "Invalid option.\n";
+            break;
+        }
+    }
+}
+
 std::string Line::ToString() const
 {
     return "ID " + std::to_string(_id) +

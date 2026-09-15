@@ -16,6 +16,8 @@ class Line : public Shape
 
         virtual void DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int height) const override;
 
+        virtual void EditParameters() override;
+
         virtual std::string ToString() const override;
 
         std::string GetType() const override;
