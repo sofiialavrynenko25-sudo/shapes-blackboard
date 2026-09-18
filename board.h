@@ -27,6 +27,10 @@ class Board
 
         void MoveSelected(int newX, int newY);
 
+        void SaveToFile(const std::string& filename) const;
+
+        void LoadFromFile(const std::string& filename);
+
         void Clear();
 
         std::vector<Shape*> GetShapes();

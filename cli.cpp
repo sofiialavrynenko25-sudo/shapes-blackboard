@@ -241,6 +241,30 @@ void CLI::Process(const std::string& input)
     {
         _board.Clear();
     }
+    else if (command == "save")
+    {
+        std::string filename;
+
+        if (!(ss >> filename))
+        {
+            std::cout << "Invalid save arguments.\n";
+            return;
+        }
+
+        _board.SaveToFile(filename);
+    }
+    else if (command == "load")
+    {
+        std::string filename;
+
+        if (!(ss >> filename))
+        {
+            std::cout << "Invalid load arguments.\n";
+            return;
+        }
+
+        _board.LoadFromFile(filename);
+    }
     else
     {
         std::cout << "Unknown command.\n";
