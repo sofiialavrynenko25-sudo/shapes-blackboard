@@ -157,15 +157,28 @@ void CLI::Process(const std::string& input)
     }
     else if (command == "select")
     {
-        int id;
+        int parameterFirst;
 
-        if (!(ss >> id))
+        if (!(ss >> parameterFirst))
         {
-            std::cout << "No ID for selection.\n";
+            std::cout << "Invalid select arguments.\n";
             return;
         }
 
-        _board.SelectShape(id);
+        int parameterSecond;
+        if (ss >> parameterSecond)
+        {
+            int x = parameterFirst;
+            int y = parameterSecond;
+            
+            _board.SelectShapeCoord(x, y);
+        }
+        else
+        {
+            int id = parameterFirst;
+
+            _board.SelectShape(id);
+        }
     }
     else if (command == "remove")
     {

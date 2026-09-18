@@ -84,6 +84,22 @@ bool Board::SelectShape(int id)
     return false;
 }
 
+bool Board::SelectShapeCoord(int x, int y)
+{
+    for (int i = 0; i < _shapes.size(); i++)
+    {
+        if (_shapes[i] -> CheckCoordinates(x, y))
+        {
+            _selected = i;
+            std::cout << "Shape with ID = " << _shapes[i] -> GetId() << " was selected.\n";
+            return true;
+        }
+    }
+
+    std::cout << "No shape found at coordinates (" << x << ", " << y << ").\n";
+    return false;
+}
+
 void Board::RemoveSelected()
 {
     if (_selected == -1)

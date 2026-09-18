@@ -21,6 +21,8 @@ class Board
 
         bool SelectShape(int id);
 
+        bool SelectShapeCoord(int x, int y);
+
         void RemoveSelected();
 
         void MoveSelected(int newX, int newY);
