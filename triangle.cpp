@@ -141,8 +141,8 @@ std::string Triangle::ToString() const
         fill = "no";
     }
 
-    return "ID " + std::to_string(_id) +
-            " | Type: " + GetType() +
+    return "Type: " + GetType() +
+            " | ID " + std::to_string(_id) +
             " | Side: " + std::to_string(_side) +
             " | Position: (" + std::to_string(_x) + ", " + std::to_string(_y) + ")" +
             " | Color: " + _color +

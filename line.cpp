@@ -101,8 +101,8 @@ bool Line::EditParameters(std::stringstream& ss, int boardWidth, int boardHeight
 
 std::string Line::ToString() const
 {
-    return "ID " + std::to_string(_id) +
-            " | Type: " + GetType() +
+    return "Type: " + GetType() +
+            " | ID " + std::to_string(_id) +
             " | Length: " + std::to_string(_length) +
             " | Position: (" + std::to_string(_x) + ", " + std::to_string(_y) + ")" +
             " | Color: " + _color +

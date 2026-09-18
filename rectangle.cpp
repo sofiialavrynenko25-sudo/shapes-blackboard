@@ -94,8 +94,8 @@ std::string Rectangle::ToString() const
         fill = "no";
     }
 
-    return "ID " + std::to_string(_id) +
-            " | Type: " + GetType() +
+    return "Type: " + GetType() +
+            " | ID " + std::to_string(_id) +
             " | Width: " + std::to_string(_width) +
             " | Height: " + std::to_string(_height) +
             " | Position: (" + std::to_string(_x) + ", " + std::to_string(_y) + ")" +
