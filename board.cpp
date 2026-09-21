@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "board.h"
 #include "shape.h"
 #include "circle.h"
@@ -197,6 +198,9 @@ void Board::SaveToFile(const std::string& filename) const
 
 void Board::LoadFromFile(const std::string& filename)
 {
+    bool error = false;
+    std::vector<Shape*> tempShapes;
+
     std::ifstream file(filename);
 
     if (!file.is_open())
@@ -229,43 +233,89 @@ void Board::LoadFromFile(const std::string& filename)
             int id, x, y, radius, fill;
             std::string color;
 
-            file >> id >> x >> y >> radius >> color >> fill;
-
-            shape = new Circle(id, x, y, radius, color, fill);
+            if (file >> id >> x >> y >> radius >> color >> fill)
+            {
+                shape = new Circle(id, x, y, radius, color, fill);
+            }
+            else
+            {
+                std::cout << "Invalid format for circle.\n";
+                error = true;
+            }
         }
         else if (type == "triangle")
         {
             int id, x, y, side, fill;
             std::string color;
 
-            file >> id >> x >> y >> side >> color >> fill;
-
-            shape = new Triangle(id, x, y, side, color, fill);
+            if (file >> id >> x >> y >> side >> color >> fill)
+            {
+                shape = new Triangle(id, x, y, side, color, fill);
+            }
+            else
+            {
+                std::cout << "Invalid format for triangle.\n";
+                error = true;
+            }
         }
         else if (type == "rectangle")
         {
             int id, x, y, width, height, fill;
             std::string color;
 
-            file >> id >> x >> y >> width >> height >> color >> fill;
-
-            shape = new Rectangle(id, x, y, width, height, color, fill);
+            if (file >> id >> x >> y >> width >> height >> color >> fill)
+            {
+                shape = new Rectangle(id, x, y, width, height, color, fill);
+            }
+            else
+            {
+                std::cout << "Invalid format for rectangle.\n";
+                error = true;
+            }
         }
         else if (type == "line")
         {
             int id, x, y, length, isVertical;
             std::string color;
 
-            file >> id >> x >> y >> length >> isVertical >> color;
+            if (file >> id >> x >> y >> length >> isVertical >> color)
+            {
+                shape = new Line(id, x, y, length, isVertical, color);
+            }
+            else
+            {
+                std::cout << "Invalid format for line.\n";
+                error = true;
+            }
+        }
+        else
+        {
+            std::cout << "Invalid file format.\n";
+            error = true;
+        }
 
-            shape = new Line(id, x, y, length, isVertical, color);
+        if (error)
+        {
+            break;
         }
 
         if (shape != nullptr)
         {
-            _shapes.push_back(shape);
+            tempShapes.push_back(shape);
         }
-    }   
+    } 
+    
+    if (error)
+    {
+        for (auto& shape : tempShapes)
+        {
+            delete shape;
+        }
+
+        return;
+    }
+
+    _shapes = std::move(tempShapes);
 
     if (_shapes.empty())
     {
