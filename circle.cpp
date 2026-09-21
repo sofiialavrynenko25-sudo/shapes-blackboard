@@ -15,12 +15,26 @@ int Circle::GetRadius() const
 
 bool Circle::CheckCoordinates(int x, int y) const
 {
-    if (std::pow((x - _x), 2) + std::pow((y - _y), 2) <= std::pow(_radius, 2))
+    int distSqrd = std::pow((x - _x), 2) + std::pow((y - _y), 2);
+    int radiusSqrd = std::pow(_radius, 2);
+    
+    bool insideLims = (distSqrd <= radiusSqrd);
+
+    if (!insideLims)
+    {
+        return false;
+    }
+
+    if (_isFilled)
     {
         return true;
     }
 
-    return false;
+    int innerRadiusSqrd = std::pow((_radius - 1), 2);
+
+    bool onBorder = (distSqrd > innerRadiusSqrd && distSqrd <= radiusSqrd);
+
+    return onBorder;
 }
 
 void Circle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int height) const

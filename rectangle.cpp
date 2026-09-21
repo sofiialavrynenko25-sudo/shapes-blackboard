@@ -25,14 +25,21 @@ bool Rectangle::CheckCoordinates(int x, int y) const
     int rightLim = _x + _width / 2;
     int leftLim = _x - _width / 2;
 
-    if (x >= leftLim && x <= rightLim && y <= upperLim && y >= lowerLim)
-    {
-        return true;
-    }
-    else
+    bool insideLims = (x >= leftLim && x <= rightLim && y <= upperLim && y >= lowerLim);
+    
+    if (!insideLims)
     {
         return false;
     }
+
+    if (_isFilled)
+    {
+        return true;
+    }
+    
+    bool onBorder = (x == leftLim || x == rightLim || y == upperLim || y == lowerLim);
+
+    return onBorder;
 }
 
 void Rectangle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int height) const
