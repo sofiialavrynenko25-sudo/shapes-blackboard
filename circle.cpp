@@ -81,6 +81,31 @@ bool Circle::EditParameters(std::stringstream& ss, int boardWidth, int boardHeig
     return true;
 }
 
+std::string Circle::Serialize() const
+{
+    std::ostringstream toReturn;
+
+    toReturn << GetType() << " "
+            << _id << " "
+            << _x << " "
+            << _y << " "
+            << _radius << " "
+            << _color << " "
+            << _isFilled;
+        
+    return toReturn.str();
+}
+
+bool Circle::Deserialize(std::istream& serialized)
+{
+    if (!(serialized >> _id >> _x >> _y >> _radius >> _color >> _isFilled))
+    {
+        return false;
+    }
+
+    return true;
+}
+
 std::string Circle::ToString() const
 {
     std::string fill;

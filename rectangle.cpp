@@ -81,6 +81,32 @@ bool Rectangle::EditParameters(std::stringstream& ss, int boardWidth, int boardH
     return true;
 }
 
+std::string Rectangle::Serialize() const
+{
+    std::ostringstream toReturn;
+
+    toReturn << GetType() << " "
+            << _id << " "
+            << _x << " "
+            << _y << " "
+            << _width << " "
+            << _height << " "
+            << _color << " "
+            << _isFilled;
+        
+    return toReturn.str();
+}
+
+bool Rectangle::Deserialize(std::istream& serialized)
+{
+    if (!(serialized >> _id >> _x >> _y >> _width >> _height >> _color >> _isFilled))
+    {
+        return false;
+    }
+
+    return true;
+}
+
 std::string Rectangle::ToString() const
 {
     std::string fill;

@@ -128,6 +128,31 @@ bool Triangle::EditParameters(std::stringstream& ss, int boardWidth, int boardHe
     return true;
 }
 
+std::string Triangle::Serialize() const
+{
+    std::ostringstream toReturn;
+
+    toReturn << GetType() << " "
+            << _id << " "
+            << _x << " "
+            << _y << " "
+            << _side << " "
+            << _color << " "
+            << _isFilled;
+        
+    return toReturn.str();
+}
+
+bool Triangle::Deserialize(std::istream& serialized)
+{
+    if (!(serialized >> _id >> _x >> _y >> _side >> _color >> _isFilled))
+    {
+        return false;
+    }
+
+    return true;
+}
+
 std::string Triangle::ToString() const
 {
     std::string fill;

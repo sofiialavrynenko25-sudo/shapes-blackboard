@@ -23,6 +23,10 @@ class Shape
 
         virtual bool EditParameters(std::stringstream& ss, int boardWidth, int boardHeight) = 0;
 
+        virtual std::string Serialize() const = 0;
+
+        virtual bool Deserialize(std::istream& serialized) = 0;
+
         virtual std::string ToString() const = 0;
 
         virtual bool IsEqual(const Shape* other) const = 0;

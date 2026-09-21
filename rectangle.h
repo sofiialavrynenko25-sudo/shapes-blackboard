@@ -18,6 +18,10 @@ class Rectangle : public Shape
 
         virtual bool EditParameters(std::stringstream& ss, int boardWidth, int boardHeight) override;
 
+        virtual std::string Serialize() const override;
+
+        virtual bool Deserialize(std::istream& serialized) override;
+
         virtual std::string ToString() const override;
 
         virtual bool IsEqual(const Shape* other) const override;

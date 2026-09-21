@@ -99,6 +99,31 @@ bool Line::EditParameters(std::stringstream& ss, int boardWidth, int boardHeight
     return true;
 }
 
+std::string Line::Serialize() const
+{
+    std::ostringstream toReturn;
+
+    toReturn << GetType() << " "
+            << _id << " "
+            << _x << " "
+            << _y << " "
+            << _length << " "
+            << _isVertical << " "
+            << _color;
+        
+    return toReturn.str();
+}
+
+bool Line::Deserialize(std::istream& serialized)
+{
+    if (!(serialized >> _id >> _x >> _y >> _length >> _isVertical >> _color))
+    {
+        return false;
+    }
+
+    return true;
+}
+
 std::string Line::ToString() const
 {
     return "Type: " + GetType() +

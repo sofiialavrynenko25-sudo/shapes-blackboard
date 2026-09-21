@@ -162,33 +162,9 @@ void Board::SaveToFile(const std::string& filename) const
 
     for (const auto& shape : _shapes)
     {
-        if (shape == nullptr)
+        if (shape != nullptr)
         {
-            continue;
-        }
-
-        std::string type = shape -> GetType();
-        file << type << " " << shape -> GetId() << " " << shape -> GetX() << " " << shape -> GetY() << " ";
-
-        if (type == "circle")
-        {
-            const Circle* circle = dynamic_cast<const Circle*>(shape);
-            file << circle -> GetRadius() << " " << circle -> GetColor() << " " << circle -> GetIsFilled() << "\n";
-        }
-        else if (type == "triangle")
-        {
-            const Triangle* triangle = dynamic_cast<const Triangle*>(shape);
-            file << triangle -> GetSide() << " " << triangle -> GetColor() << " " << triangle -> GetIsFilled() << "\n";
-        }
-        else if (type == "rectangle")
-        {
-            const Rectangle* rectangle = dynamic_cast<const Rectangle*>(shape);
-            file << rectangle -> GetWidth() << " " << rectangle -> GetHeight() << " " << rectangle -> GetColor() << " " << rectangle -> GetIsFilled() << "\n";
-        }
-        else if (type == "line")
-        {
-            const Line* line = dynamic_cast<const Line*>(shape);
-            file << line -> GetLength() << " " << line -> GetIsVertical() << " " << line -> GetColor() << "\n";
+                file << shape -> Serialize() << "\n";
         }
     }
 
@@ -230,78 +206,40 @@ void Board::LoadFromFile(const std::string& filename)
 
         if (type == "circle")
         {
-            int id, x, y, radius, fill;
-            std::string color;
-
-            if (file >> id >> x >> y >> radius >> color >> fill)
-            {
-                shape = new Circle(id, x, y, radius, color, fill);
-            }
-            else
-            {
-                std::cout << "Invalid format for circle.\n";
-                error = true;
-            }
+            shape = new Circle(0, 0, 0, 0, "", false);
         }
         else if (type == "triangle")
         {
-            int id, x, y, side, fill;
-            std::string color;
-
-            if (file >> id >> x >> y >> side >> color >> fill)
-            {
-                shape = new Triangle(id, x, y, side, color, fill);
-            }
-            else
-            {
-                std::cout << "Invalid format for triangle.\n";
-                error = true;
-            }
+            shape = new Triangle(0, 0, 0, 0, "", false);
         }
         else if (type == "rectangle")
         {
-            int id, x, y, width, height, fill;
-            std::string color;
-
-            if (file >> id >> x >> y >> width >> height >> color >> fill)
-            {
-                shape = new Rectangle(id, x, y, width, height, color, fill);
-            }
-            else
-            {
-                std::cout << "Invalid format for rectangle.\n";
-                error = true;
-            }
+            shape = new Rectangle(0, 0, 0, 0, 0, "", false);
         }
         else if (type == "line")
         {
-            int id, x, y, length, isVertical;
-            std::string color;
-
-            if (file >> id >> x >> y >> length >> isVertical >> color)
-            {
-                shape = new Line(id, x, y, length, isVertical, color);
-            }
-            else
-            {
-                std::cout << "Invalid format for line.\n";
-                error = true;
-            }
+            shape = new Line(0, 0, 0, 0, false, "");
         }
         else
         {
             std::cout << "Invalid file format.\n";
             error = true;
-        }
-
-        if (error)
-        {
             break;
         }
 
         if (shape != nullptr)
         {
-            tempShapes.push_back(shape);
+            if (shape -> Deserialize(file))
+            {
+                tempShapes.push_back(shape);
+            }
+            else
+            {
+                std::cout << "Invalid format for " << type << ".\n";
+                delete shape;
+                error = true;
+                break;
+            }
         }
     } 
     
