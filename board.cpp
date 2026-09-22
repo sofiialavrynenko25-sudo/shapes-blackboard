@@ -12,7 +12,7 @@ void Board::Draw() const
 {
     std::vector<std::vector<char>> grid (_height, std::vector<char> (_width, ' '));
     
-    for (const auto* shape : _shapes)
+    for (const auto& shape : _shapes)
     {
         if (shape != nullptr)
         {
@@ -37,7 +37,7 @@ void Board::Draw() const
     std::cout << "=" << std::string(_width, '=') << "=\n";
 }
 
-void Board::AddShape(Shape* shape)
+void Board::AddShape(std::unique_ptr<Shape> shape)
 {
     if (shape == nullptr)
     {
@@ -45,27 +45,25 @@ void Board::AddShape(Shape* shape)
         return;
     }
 
-    for (const auto* existShape : _shapes)
+    for (const auto& existShape : _shapes)
     {
         if (existShape -> GetId() == shape -> GetId())
         {
             std::cout << "Cannot add a shape with existing ID.\n";
-            delete shape;
             return;
         }
 
-        if (existShape -> IsEqual(shape))
+        if (existShape -> IsEqual(shape.get()))
         {
             std::cout << "Cannot add a shape with the same type and parameters.\n";
-            delete shape;
             return;
         }
     }
 
-    _shapes.push_back(shape);
+    _shapes.push_back(std::move(shape));
     _selected = _shapes.size() - 1;
 
-    std::cout << "Shape (" << shape -> GetType() << ") was added.\n";
+    std::cout << "Shape was added.\n";
 }
 
 bool Board::SelectShape(int id)
@@ -114,11 +112,16 @@ void Board::RemoveSelected()
         return;
     }
 
-    delete _shapes[_selected];
-
     _shapes.erase(_shapes.begin() + _selected);
 
-    _selected = _shapes.size() - 1;
+    if (_shapes.empty())
+    {
+        _selected = -1;
+    }
+    else
+    {
+        _selected = _shapes.size() - 1;
+    }
 
     std::cout << "Selected shape was removed.\n"; 
 }
@@ -137,11 +140,11 @@ void Board::MoveSelected(int newX, int newY)
         return;
     }
 
-    Shape* shapeToMove = _shapes[_selected]; 
-    shapeToMove -> SetParameters(newX, newY);
+    _shapes[_selected] -> SetParameters(newX, newY);
+    std::unique_ptr<Shape> shapeToMove = std::move(_shapes[_selected]); 
 
     _shapes.erase(_shapes.begin() + _selected);
-    _shapes.push_back(shapeToMove);
+    _shapes.push_back(std::move(shapeToMove));
 
     _selected = _shapes.size() - 1;
 
@@ -175,7 +178,7 @@ void Board::SaveToFile(const std::string& filename) const
 void Board::LoadFromFile(const std::string& filename)
 {
     bool error = false;
-    std::vector<Shape*> tempShapes;
+    std::vector<std::unique_ptr<Shape>> tempShapes;
 
     std::ifstream file(filename);
 
@@ -202,23 +205,23 @@ void Board::LoadFromFile(const std::string& filename)
 
     while (file >> type)
     {
-        Shape* shape = nullptr;
+        std::unique_ptr<Shape> shape = nullptr;
 
         if (type == "circle")
         {
-            shape = new Circle(0, 0, 0, 0, "", false);
+            shape = std::make_unique<Circle>(0, 0, 0, 0, "", false);
         }
         else if (type == "triangle")
         {
-            shape = new Triangle(0, 0, 0, 0, "", false);
+            shape = std::make_unique<Triangle>(0, 0, 0, 0, "", false);
         }
         else if (type == "rectangle")
         {
-            shape = new Rectangle(0, 0, 0, 0, 0, "", false);
+            shape = std::make_unique<Rectangle>(0, 0, 0, 0, 0, "", false);
         }
         else if (type == "line")
         {
-            shape = new Line(0, 0, 0, 0, false, "");
+            shape = std::make_unique<Line>(0, 0, 0, 0, false, "");
         }
         else
         {
@@ -231,12 +234,11 @@ void Board::LoadFromFile(const std::string& filename)
         {
             if (shape -> Deserialize(file))
             {
-                tempShapes.push_back(shape);
+                tempShapes.push_back(std::move(shape));
             }
             else
             {
                 std::cout << "Invalid format for " << type << ".\n";
-                delete shape;
                 error = true;
                 break;
             }
@@ -245,11 +247,6 @@ void Board::LoadFromFile(const std::string& filename)
     
     if (error)
     {
-        for (auto& shape : tempShapes)
-        {
-            delete shape;
-        }
-
         return;
     }
 
@@ -270,11 +267,6 @@ void Board::LoadFromFile(const std::string& filename)
 
 void Board::Clear()
 {
-    for (auto* shape : _shapes)
-    {
-        delete shape;
-    }
-
     _shapes.clear();
 
     _selected = -1;
@@ -282,19 +274,19 @@ void Board::Clear()
     std::cout << "Board was cleared.\n";
 }
 
-std::vector<Shape*> Board::GetShapes()
+const std::vector<std::unique_ptr<Shape>>& Board::GetShapes() const
 {
     return _shapes;
 }
 
-Shape* Board::GetSelected()
+Shape* Board::GetSelected() const
 {
     if (_selected == -1 || _selected >= _shapes.size())
     {
         return nullptr;
     }
     
-    return _shapes[_selected];
+    return _shapes[_selected].get();
 }
 
 int Board::GetWidth()

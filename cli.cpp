@@ -3,6 +3,7 @@
 #include <cmath>
 #include <string>
 #include <sstream>
+#include <memory>
 
 #include "shape.h"
 #include "circle.h"
@@ -31,7 +32,7 @@ void CLI::Process(const std::string& input)
     }
     else if (command == "list")
     {
-        std::vector<Shape*> shapes = _board.GetShapes();
+        const std::vector<std::unique_ptr<Shape>>& shapes = _board.GetShapes();
 
         if (shapes.empty())
         {
@@ -64,7 +65,7 @@ void CLI::Process(const std::string& input)
             return;
         }
 
-        Shape* newShape = nullptr;
+        std::unique_ptr<Shape> newShape = nullptr;
 
         if (type == "circle")
         {
@@ -83,7 +84,7 @@ void CLI::Process(const std::string& input)
                 return;
             }
 
-            newShape = new Circle(id, x, y, radius, color, fill != 0);
+            newShape = std::make_unique<Circle>(id, x, y, radius, color, fill != 0);
         }
         else if (type == "triangle")
         {
@@ -104,7 +105,7 @@ void CLI::Process(const std::string& input)
                 return;
             }
 
-            newShape = new Triangle(id, x, y, side, color, fill != 0);
+            newShape = std::make_unique<Triangle>(id, x, y, side, color, fill != 0);
         }
         else if (type == "rectangle")
         {
@@ -123,7 +124,7 @@ void CLI::Process(const std::string& input)
                 return;
             }
 
-            newShape = new Rectangle(id, x, y, width, height, color, fill != 0);
+            newShape = std::make_unique<Rectangle>(id, x, y, width, height, color, fill != 0);
         }
         else if (type == "line")
         {
@@ -142,7 +143,7 @@ void CLI::Process(const std::string& input)
                 return;
             }
 
-            newShape = new Line(id, x, y, length, isVert != 0, color);
+            newShape = std::make_unique<Line>(id, x, y, length, isVert != 0, color);
         }
         else
         {
@@ -152,7 +153,7 @@ void CLI::Process(const std::string& input)
 
         if (newShape != nullptr)
         {
-            _board.AddShape(newShape);
+            _board.AddShape(std::move(newShape));
         }
     }
     else if (command == "select")

@@ -53,16 +53,9 @@ void Rectangle::DrawOnBoard(std::vector<std::vector<char>>& grid, int width, int
     {
         for (int x = startX; x <= endX; x++)
         {
-            if (_isFilled)
+            if (CheckCoordinates(x, y))
             {
                 grid[y][x] = _color.empty() ? '*' : _color[0];
-            }
-            else
-            {
-               if (x == startX || x == endX || y == startY || y == endY)
-               {
-                    grid[y][x] = _color.empty() ? '*' : _color[0];
-               } 
             }
         }
     }

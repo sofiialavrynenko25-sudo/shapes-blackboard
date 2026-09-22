@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 #include "shape.h"
 
@@ -8,7 +9,7 @@ class Board
     private:
         int _height;
         int _width;
-        std::vector<Shape*> _shapes;
+        std::vector<std::unique_ptr<Shape>> _shapes;
         int _selected;
     
     public:
@@ -17,7 +18,7 @@ class Board
 
         void Draw() const;
 
-        void AddShape(Shape* shape);
+        void AddShape(std::unique_ptr<Shape> shape);
 
         bool SelectShape(int id);
 
@@ -33,9 +34,9 @@ class Board
 
         void Clear();
 
-        std::vector<Shape*> GetShapes();
+        const std::vector<std::unique_ptr<Shape>>& GetShapes() const;
 
-        Shape* GetSelected();
+        Shape* GetSelected() const;
 
         int GetWidth();
 
